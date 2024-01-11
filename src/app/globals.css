@@ -1,3 +1,29 @@
 body {
   zoom: 175%;
+  background-color: rgb(162, 180, 208);
+}
+h1 {
+  color: rgb(68, 51, 153);
+  font-style: italic;
+  font-weight: bold;
+  text-align: center;
+}
+main {
+  background-color: rgb(173, 192, 223);
+  border: 5px solid rgb(139, 155, 245);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px black, 0 25px 50px black;
+}
+main > * {
+  padding: 8px;
+  border-bottom: 2px solid rgb(139, 155, 245);
+  display: flex;
+  gap: 8px;
+}
+span,
+input:not([type="checkbox"]) {
+  flex-grow: 1;
+}
+input:checked + span {
+  text-decoration: line-through;
 }
