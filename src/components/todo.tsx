@@ -12,7 +12,7 @@ export default function Todo() {
 
   useEffect(() => {
     taskRepo
-      .liveQuery({
+      .find({
         orderBy: {
           createdAt: "asc"
         },
@@ -20,7 +20,7 @@ export default function Todo() {
           completed: undefined
         }
       })
-      .subscribe((info) => setTasks(info.applyChanges));
+      .then((info) => setTasks(info));
   }, []);
 
   async function addTask(event: FormEvent<HTMLFormElement>) {
