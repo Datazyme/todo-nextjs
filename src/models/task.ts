@@ -1,7 +1,8 @@
 import { Allow, Entity, Fields } from "remult";
 
 @Entity("tasks", {
-  allowApiCrud: Allow.authenticated
+  allowApiCrud: Allow.authenticated,
+  allowApiInsert: "admin"
 })
 export class Task {
   @Fields.cuid()

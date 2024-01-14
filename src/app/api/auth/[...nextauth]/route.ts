@@ -12,12 +12,18 @@ const auth = NextAuth({
       },
       authorize: (credentials) => findUser(credentials?.name) || null
     })
-  ]
+  ],
+  callbacks: {
+    session: ({ session }) => ({
+      ...session,
+      user: findUser(session.user?.name)
+    })
+  }
 });
 export { auth as GET, auth as POST };
 
 const validUsers: UserInfo[] = [
-  { id: "1", name: "Jane" },
+  { id: "1", name: "Jane", roles: ["admin"] },
   { id: "2", name: "Steve" }
 ];
 

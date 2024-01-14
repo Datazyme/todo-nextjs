@@ -3,7 +3,7 @@ import { Task } from "@/models/task";
 import { FormEvent, useEffect, useState } from "react";
 import { UserInfo, remult } from "remult";
 import { TasksController } from "./TasksController";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const taskRepo = remult.repo(Task);
 
@@ -13,7 +13,7 @@ export default function Todo() {
   const session = useSession();
 
   useEffect(() => {
-    //remult.user = session.data?.user as UserInfo;
+    remult.user = session.data?.user as UserInfo;
     if (session.status === "unauthenticated") signIn();
     else if (session.status === "authenticated")
       taskRepo
@@ -62,14 +62,20 @@ export default function Todo() {
     <div>
       <h1>Todos {tasks.length}</h1>
       <main>
-        <form onSubmit={addTask}>
-          <input
-            value={newTaskTitle}
-            placeholder="What is to be done?"
-            onChange={(e) => setNewTaskTitle(e.target.value)}
-          ></input>
-          <button>Add</button>
-        </form>
+        <div>
+          <span>Hello {remult.user?.name}</span>
+          <button onClick={() => signOut()}>Sign Out</button>
+        </div>
+        {taskRepo.metadata.apiInsertAllowed() && (
+          <form onSubmit={addTask}>
+            <input
+              value={newTaskTitle}
+              placeholder="What is to be done?"
+              onChange={(e) => setNewTaskTitle(e.target.value)}
+            ></input>
+            <button>Add</button>
+          </form>
+        )}
         {tasks.map((task) => {
           return (
             <div key={task.id}>
