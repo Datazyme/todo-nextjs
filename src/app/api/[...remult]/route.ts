@@ -2,7 +2,7 @@ import { TasksController } from "@/components/TasksController";
 import { Task } from "@/models/task";
 import { remultNextApp } from "remult/remult-next";
 import { createPostgresDataProvider } from "remult/postgres";
-import { getUserOnServer } from "../auth/[...nextauth]/route";
+import getUserOnServer from "../auth/[...nextauth]/route";
 
 const api = remultNextApp({
   entities: [Task],
