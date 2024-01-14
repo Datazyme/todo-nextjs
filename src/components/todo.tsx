@@ -1,27 +1,32 @@
 "use client";
 import { Task } from "@/models/task";
 import { FormEvent, useEffect, useState } from "react";
-import { remult } from "remult";
+import { UserInfo, remult } from "remult";
 import { TasksController } from "./TasksController";
+import { signIn, useSession } from "next-auth/react";
 
 const taskRepo = remult.repo(Task);
 
 export default function Todo() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState("");
+  const session = useSession();
 
   useEffect(() => {
-    taskRepo
-      .find({
-        orderBy: {
-          createdAt: "asc"
-        },
-        where: {
-          completed: undefined
-        }
-      })
-      .then((info) => setTasks(info));
-  }, []);
+    //remult.user = session.data?.user as UserInfo;
+    if (session.status === "unauthenticated") signIn();
+    else if (session.status === "authenticated")
+      taskRepo
+        .find({
+          orderBy: {
+            createdAt: "asc"
+          },
+          where: {
+            completed: undefined
+          }
+        })
+        .then((info) => setTasks(info));
+  }, [session]);
 
   async function addTask(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -52,6 +57,7 @@ export default function Todo() {
     TasksController.setAllCompleted(completed);
   }
 
+  if (session.status !== "authenticated") return <></>;
   return (
     <div>
       <h1>Todos {tasks.length}</h1>

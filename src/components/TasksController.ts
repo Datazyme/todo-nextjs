@@ -1,8 +1,8 @@
 import { Task } from "@/models/task";
-import { BackendMethod, remult } from "remult";
+import { Allow, BackendMethod, remult } from "remult";
 
 export class TasksController {
-  @BackendMethod({ allowed: true })
+  @BackendMethod({ allowed: Allow.authenticated })
   static async setAllCompleted(completed: boolean) {
     const taskRepo = remult.repo(Task);
     for (const task of await taskRepo.find()) {
