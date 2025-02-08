@@ -31,9 +31,7 @@ function findUser(name?: string | null) {
   return validUsers.find((user) => user.name === name);
 }
 
-async function getUserOnServer() {
+export async function getUserOnServer() {
   const session = await getServerSession();
   return findUser(session?.user?.name);
 }
-
-export default getUserOnServer;
